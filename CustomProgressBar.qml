@@ -45,39 +45,6 @@ Item {
         }
     }
 
-//    ProgressBar {
-//        id: progressBar
-//        font.family: "Verdana"
-//        font.pointSize: 14
-//        anchors.fill: parent
-//        from: fromNum
-//        to: toNum
-//        value: val
-//        visible: isVisible
-////        contentItem: Rectangle {
-////            id: progressRect
-////            border.color: "black"
-////            color: "#00FF00"
-////            radius: 10
-////            //anchors.fill: parent
-////            width: progressRect + progressBar.value
-////        }
-
-////        Rectangle {
-////            id: whiteRect
-//////            anchors.top: progressRect.top
-//////            anchors.right: progressRect.right
-//////            anchors.bottom: progressRect.bottom
-//////            implicitWidth: progressRect.width * (1 - progressBar.value)
-//////            implicitHeight: progressRect.height
-////            anchors.fill: progressRect
-////            //implicitWidth: whiteRect.width - progressBar.value//progressRect.width * (1 - progressBar.value)
-////            border.color: "black"
-////            color: "white"
-////            radius: 10
-////        }
-//    }
-
     Connections {
         target: mainWindow
         onShowProgressBar: {

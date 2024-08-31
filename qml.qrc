@@ -8,5 +8,7 @@
         <file>PauseButton.qml</file>
         <file>CanselButton.qml</file>
         <file>Logger.qml</file>
+        <file>CustomChart.qml</file>
+        <file>CustomBarChart.qml</file>
     </qresource>
 </RCC>
