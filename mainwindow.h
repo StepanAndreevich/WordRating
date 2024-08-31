@@ -1,6 +1,8 @@
 #pragma once
 #include <QObject>
 #include <QThread>
+#include <QVariant>
+#include <QVariantList>
 #include "filereader.h"
 
 class MainWindow : public QObject
@@ -21,6 +23,7 @@ signals:
     void fileError(QString errorText);
     void outTextReady(QString outText);
     void processinfFile(QString filePath);
+    void resultReady(QStringList wordList, QVariantList entriesList);
 
 private:
     bool checkFilePath(QString& filePath);
