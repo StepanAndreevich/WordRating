@@ -5,7 +5,9 @@ MainWindow::MainWindow(QObject *parent) : QObject(parent)
 {
     m_fileReader = new FileReader();
     connect(m_fileReader, &FileReader::outTextReady, this, &MainWindow::outTextReady);
+    connect(m_fileReader, &FileReader::resultReady, this, &MainWindow::resultReady);
     connect(this, &MainWindow::processinfFile, m_fileReader, &FileReader::wordEntry);
+
     m_thread = new QThread(this);
     connect(this, SIGNAL(destroyed()), m_thread, SLOT(quit()));
     m_fileReader->moveToThread(m_thread);
