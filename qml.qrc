@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>CustomHistogram.qml</file>
+        <file>FileSelector.qml</file>
+        <file>StartButton.qml</file>
+        <file>CustomProgressBar.qml</file>
+        <file>PauseButton.qml</file>
+        <file>CanselButton.qml</file>
+        <file>Logger.qml</file>
+    </qresource>
+</RCC>
