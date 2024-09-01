@@ -50,16 +50,6 @@ Window {
                 Layout.fillWidth: true
             }
 
-//            PauseButton {
-//                id: pauseButton
-//                Layout.maximumHeight: 50
-//                Layout.fillHeight: true
-//                Layout.fillWidth: true
-//                onClicked: {
-//                    progressBar.val = progressBar.val + 10
-//                }
-//            }
-
             CanselButton {
                 id: canselButton
                 Layout.maximumHeight: 50
