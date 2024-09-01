@@ -5,9 +5,10 @@ MainWindow::MainWindow(QObject *parent) : QObject(parent)
 {
     m_fileReader = new FileReader();
     m_fileReader->setTopBorder(15);
-    connect(m_fileReader, &FileReader::outTextReady, this, &MainWindow::outTextReady);
+    connect(m_fileReader, &FileReader::error, this, &MainWindow::fileError);
     connect(m_fileReader, &FileReader::resultReady, this, &MainWindow::resultReady);
     connect(m_fileReader, &FileReader::changeProgress, this, &MainWindow::changeProgress);
+    connect(m_fileReader, &FileReader::finished, this, &MainWindow::finished);
     connect(this, &MainWindow::processinfFile, m_fileReader, &FileReader::wordEntry);
 
     m_thread = new QThread(this);
@@ -33,6 +34,7 @@ void MainWindow::start()
         m_thread->start();
     if(!checkFilePath(m_filePath))
     {
+        emit finished();
         emit fileError("Не задан файл.");
         return;
     }

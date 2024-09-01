@@ -38,6 +38,12 @@ QString FileReader::readFile(const QString& filePath)
 void FileReader::wordEntry(const QString& filePath)
 {
     auto fileData = readFile(filePath);
+    if(fileData.isEmpty())
+    {
+        emit finished();
+        emit error("Ошибка чтения файла.");
+        return;
+    }
     QRegExp val("[,.:;!-+=/*@#&$?]"); //Убираем знаки припинания из строки
     QString newStr = fileData.replace(val, QString(""));
     QRegExp tabs("\r\n");
@@ -47,7 +53,12 @@ void FileReader::wordEntry(const QString& filePath)
     QStringList words = QString(newStr).split(" ");
     auto wordCounter = countEntries(words);
     if(wordCounter.isEmpty())
-        return emit outTextReady("Error");
+    {
+        emit finished();
+        return emit error("Файл пуст.");
+    }
+
+    emit finished();
 }
 
 QMap<QString, int> FileReader::countEntries(QStringList words)
@@ -95,7 +106,10 @@ void FileReader::topOfWords(QMultiMap<int, QString> wordCounter)
     QMap<int, QString>::iterator begin = 0;
     QMap<int, QString>::iterator end = 0;
     if(topBorder() == 0)
+    {
+        emit finished();
         return;
+    }
 
     if(wordCounter.size() <= topBorder())
     {

@@ -16,15 +16,40 @@ public:
      * \param border
      */
     void setTopBorder(int border);
+    /*!
+     * \brief topBorder верхняя граница топа
+     * \return
+     */
     int topBorder();
 
 public slots:
+    /*!
+     * \brief wordEntry
+     * \param filePath путь к файлу
+     */
     void wordEntry(const QString& filePath);
 
 signals:
-    void outTextReady(QString outText);
+    /*!
+     * \brief error сигнал об ошибке при обработке файла
+     * \param error текст ошибки
+     */
+    void error(QString error);
+    /*!
+     * \brief resultReady подготовленные данные отправляемые в qml
+     * \param wordList список слов
+     * \param entriesList количество вхождений
+     */
     void resultReady(QStringList wordList, QVariantList entriesList);
+    /*!
+     * \brief changeProgress сигнал изменения прогресс бара
+     * \param value процент заполнения прогресс бара
+     */
     void changeProgress(double value);
+    /*!
+     * \brief finished сигнал о завершении обработки файла
+     */
+    void finished();
 
 private:
     /*!
@@ -51,17 +76,18 @@ private:
      * \return топ-15 слов
      */
     void topOfWords(QMultiMap<int, QString> wordCounter);
-    //QMultiMap<QString, int> topOfWords(QMultiMap<int, QString> wordCounter);
-
     /*!
      * \brief sendData отправляем доанные в qml
      * \param data
      */
     void sendData(QMultiMap<QString, int> data);
+
     /*!
      * \brief m_filePath абсольтный путь к открытому файлу
      */
     QString m_filePath = "";
+    /*!
+     * \brief m_topBorder верхняя граница топа
+     */
     int m_topBorder = 0;
-    bool m_pause = false;
 };
