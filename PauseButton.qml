@@ -16,6 +16,6 @@ Button {
         opacity: 0.7
     }
     onClicked: {
-        console.log("++++++ Pause button clicled")
+        mainWindow.pause()
     }
 }

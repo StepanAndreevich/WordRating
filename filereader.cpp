@@ -1,13 +1,22 @@
+#include "filereader.h"
 #include <QFile>
 #include <QSet>
 #include <QMap>
-#include "filereader.h"
-#include <QVariant>
-#include <QVariantList>
+#include <QThread>
 
 FileReader::FileReader(QObject *parent) : QObject(parent)
 {
 
+}
+
+void FileReader::setTopBorder(int border)
+{
+    m_topBorder = border;
+}
+
+int FileReader::topBorder()
+{
+    return m_topBorder;
 }
 
 QString FileReader::readFile(const QString& filePath)
@@ -39,46 +48,32 @@ void FileReader::wordEntry(const QString& filePath)
     auto wordCounter = countEntries(words);
     if(wordCounter.isEmpty())
         return emit outTextReady("Error");
-
-    auto reversWordCount = sortByEntriesCounting(wordCounter);
-    if(reversWordCount.isEmpty())
-        return emit outTextReady("Error");
-
-    auto resultWords = topOfWords(reversWordCount);
-    if(resultWords.isEmpty())
-        return emit outTextReady("Error");
-
-    auto wordsList = resultWords.keys();
-    //auto entries = resultWords.values();
-    QVariantList entries = {};
-    for(const auto& val : resultWords.values())
-        entries.append(val);
-    emit resultReady(wordsList, entries);
-
-//    QString outText;
-//    for(const auto& word: resultWords.keys())
-//    {
-//        auto count = resultWords.value(word);
-//        QString text = QString("%1(%2) \n").arg(word).arg(count);
-//        outText.append(text);
-//    }
-//    emit outTextReady(outText);
 }
 
 QMap<QString, int> FileReader::countEntries(QStringList words)
 {
     QMap<QString, int> wordCounter = {};
+    double progress = 0;
+    double count = 0;
+    double allWords = words.count();
     for(const auto& word : words)
     {
         if(!wordCounter.contains(word))
         {
             wordCounter.insert(word, 1);
+            auto sortWordCounter = sortByEntriesCounting(wordCounter);
+            topOfWords(sortWordCounter);
         }
         else
         {
             auto count = wordCounter.value(word);
             wordCounter.insert(word, ++count);
+            auto sortWordCounter = sortByEntriesCounting(wordCounter);
+            topOfWords(sortWordCounter);
         }
+        ++count;
+        progress = count / allWords * 100;
+        emit changeProgress(progress);
     }
 
     return wordCounter;
@@ -95,11 +90,14 @@ QMultiMap<int, QString> FileReader::sortByEntriesCounting(QMap<QString, int> wor
     return reversWordCount;
 }
 
-QMultiMap<QString, int> FileReader::topOfWords(QMultiMap<int, QString> wordCounter)
+void FileReader::topOfWords(QMultiMap<int, QString> wordCounter)
 {
     QMap<int, QString>::iterator begin = 0;
     QMap<int, QString>::iterator end = 0;
-    if(wordCounter.size() <= 15)
+    if(topBorder() == 0)
+        return;
+
+    if(wordCounter.size() <= topBorder())
     {
         begin = wordCounter.end() - 1;
         end = wordCounter.begin();
@@ -107,7 +105,7 @@ QMultiMap<QString, int> FileReader::topOfWords(QMultiMap<int, QString> wordCount
     else
     {
         begin = wordCounter.end() - 1;
-        end = wordCounter.end() - 16;
+        end = wordCounter.end() - topBorder() - 1;
     }
 
     QMultiMap<QString, int> resultWords = {};
@@ -117,7 +115,16 @@ QMultiMap<QString, int> FileReader::topOfWords(QMultiMap<int, QString> wordCount
         auto key = it.value();
         resultWords.insert(key, val);
     }
+    sendData(resultWords);
+}
 
-    return resultWords;
+void FileReader::sendData(QMultiMap<QString, int> data)
+{
+    auto wordsList = data.keys();
+    QVariantList entries = {};
+    for(const auto& val : data.values())
+        entries.append(val);
+    emit resultReady(wordsList, entries);
+    QThread::msleep(100);
 }
 

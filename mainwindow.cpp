@@ -4,8 +4,10 @@
 MainWindow::MainWindow(QObject *parent) : QObject(parent)
 {
     m_fileReader = new FileReader();
+    m_fileReader->setTopBorder(15);
     connect(m_fileReader, &FileReader::outTextReady, this, &MainWindow::outTextReady);
     connect(m_fileReader, &FileReader::resultReady, this, &MainWindow::resultReady);
+    connect(m_fileReader, &FileReader::changeProgress, this, &MainWindow::changeProgress);
     connect(this, &MainWindow::processinfFile, m_fileReader, &FileReader::wordEntry);
 
     m_thread = new QThread(this);
@@ -27,13 +29,19 @@ void MainWindow::setFilePath(QString filePath)
 
 void MainWindow::start()
 {
-    emit clearHistogram();
+    if(!m_thread->isRunning())
+        m_thread->start();
     if(!checkFilePath(m_filePath))
     {
         emit fileError("Не задан файл.");
         return;
     }
     emit processinfFile(m_filePath);
+}
+
+void MainWindow::stop()
+{
+    m_thread->terminate();
 }
 
 QString MainWindow::fixFilePath(QString filePath)

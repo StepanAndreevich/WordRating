@@ -11,6 +11,12 @@ class FileReader : public QObject
     Q_OBJECT
 public:
     explicit FileReader(QObject *parent = nullptr);
+    /*!
+     * \brief setTopBorder установить границу топа слов
+     * \param border
+     */
+    void setTopBorder(int border);
+    int topBorder();
 
 public slots:
     void wordEntry(const QString& filePath);
@@ -18,6 +24,7 @@ public slots:
 signals:
     void outTextReady(QString outText);
     void resultReady(QStringList wordList, QVariantList entriesList);
+    void changeProgress(double value);
 
 private:
     /*!
@@ -43,9 +50,18 @@ private:
      * \param wordCounter отсортированный, по кол-ву вхождений, QMap слов
      * \return топ-15 слов
      */
-    QMultiMap<QString, int> topOfWords(QMultiMap<int, QString> wordCounter);
+    void topOfWords(QMultiMap<int, QString> wordCounter);
+    //QMultiMap<QString, int> topOfWords(QMultiMap<int, QString> wordCounter);
+
+    /*!
+     * \brief sendData отправляем доанные в qml
+     * \param data
+     */
+    void sendData(QMultiMap<QString, int> data);
     /*!
      * \brief m_filePath абсольтный путь к открытому файлу
      */
     QString m_filePath = "";
+    int m_topBorder = 0;
+    bool m_pause = false;
 };

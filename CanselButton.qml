@@ -16,6 +16,6 @@ Button {
         opacity: 0.7
     }
     onClicked: {
-        console.log("++++++ Cansel button clicled")
+        mainWindow.stop()
     }
 }
