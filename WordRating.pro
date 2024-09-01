@@ -1,4 +1,4 @@
-QT += qml quick
+QT += core qml quick
 
 CONFIG += c++14
 

@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.4
 Item {
     property int fromNum: 0
     property int toNum: 100
-    property int val: 0
+    property real val: 0
     property bool isVisible: false
 
     ProgressBar {
@@ -37,18 +37,19 @@ Item {
             }
             Label {
                 anchors.centerIn: parent
-                text: (progress.value).toFixed(0) + "%"
+                text: (progress.value).toFixed(2) + "%"
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
             }
-
         }
     }
 
     Connections {
         target: mainWindow
-        onShowProgressBar: {
-            isVisible = visible
+        onChangeProgress: {
+            if(!isVisible)
+                isVisible = !isVisible
+            val = value
         }
     }
 }
