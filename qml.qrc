@@ -1,11 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>FileSelector.qml</file>
-        <file>StartButton.qml</file>
-        <file>CustomProgressBar.qml</file>
-        <file>CanselButton.qml</file>
-        <file>Logger.qml</file>
-        <file>CustomBarChart.qml</file>
+        <file>gui/CanselButton.qml</file>
+        <file>gui/CustomBarChart.qml</file>
+        <file>gui/CustomProgressBar.qml</file>
+        <file>gui/FileSelector.qml</file>
+        <file>gui/Logger.qml</file>
+        <file>gui/main.qml</file>
+        <file>gui/StartButton.qml</file>
     </qresource>
 </RCC>
