@@ -44,6 +44,7 @@ void MainWindow::start()
 void MainWindow::stop()
 {
     m_thread->terminate();
+    emit finished();
 }
 
 QString MainWindow::fixFilePath(QString filePath)
