@@ -55,6 +55,7 @@ Window {
                 Layout.maximumHeight: 50
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                enabled: !startButton.enabled
                 onClicked: {
                     progressBar.val = progressBar.val - 10
                 }

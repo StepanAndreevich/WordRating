@@ -19,6 +19,7 @@ Button {
     }
     onClicked: {
         isActive = !isActive
+
         mainWindow.start()
     }
 
