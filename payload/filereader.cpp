@@ -55,7 +55,8 @@ void FileReader::wordEntry(const QString& filePath)
     if(wordCounter.isEmpty())
     {
         emit finished();
-        return emit error("Файл пуст.");
+        emit error("Файл пуст.");
+        return;
     }
 
     emit finished();
